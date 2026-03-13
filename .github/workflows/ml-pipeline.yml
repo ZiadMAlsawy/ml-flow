@@ -3,7 +3,9 @@ name: ML Model CI
 
 on:
     push:
-        branches: main
+        branches:
+          - '**'
+          - '!main'
     pull_request:
         branches: main # Missing Branch nmae here
 
@@ -11,7 +13,7 @@ jobs:
   validate-and-test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout repository # THIS STEP WAS MISSING 
         uses: actions/checkout@v3                
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -26,5 +28,13 @@ jobs:
       - name: Model Dry Test
         run: |
           python -c "import torch; print('Model environment ready!')"
-
+      - name: uploadReadme
+        uses: actions/upload-artifact@v4
+        with:
+          name: project-doc
+          path: README.md
 ## Majorabilty of mistakes was indentations!
+
+## https://www.freecodecamp.org/news/learn-to-use-github-actions-step-by-step-guide/
+## Refrence for fixing the file + main book
+## https://stackoverflow.com/questions/57699839/github-actions-how-to-target-all-branches-except-master
